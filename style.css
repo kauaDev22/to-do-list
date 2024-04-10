@@ -17,8 +17,7 @@ body{
   transition: background 0.2s linear;
 }
 h1{
-  display: flex;
-  justify-content: center;
+  
   color: #fff;
 
 }
