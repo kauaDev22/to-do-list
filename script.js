@@ -1,34 +1,100 @@
+const texto = document.querySelector('input')
+const btnInsert = document.querySelector('.divInsert button')
+const btnDeleteAll = document.querySelector('.header button')
+const ul = document.querySelector('ul')
 
+var itensDB = []
 
-
-function add(){
-    let li = document.createElement("LI");
-    let input_value = document.form_main.task.value;
-    let input_text = document.createTextNode(input_value)
-
-    li.appendChild(input_text)
-    document.querySelector('ul').appendChild(li);
-    document.form_main.task.value = "";
-    createCloseButton(li);
+btnDeleteAll.onclick = () => {
+    itensDB = []
+    updateDB()
 }
 
-function createCloseButton(li){
-    let span = document.createElement("SPAN")
-    let txt = document.createTextNode("\u00D7")
+texto.addEventListener('keypress', e => {
+    if(e.key == 'Enter' && texto.value != ''){
+        setItemDB()
+    }
+})
 
-    span.className = 'close'
-    span.appendChild(txt)
-    li.appendChild(span)
-
-    span.onclick =()=>{
-        span.parentElement.style.display = "none"
+btnInsert.onclick = () => {
+    if (texto.value != '') {
+        setItemDB()
     }
 }
 
-document.querySelectorAll('li').forEach(createCloseButton)
+function setItemDB() {
+    if (itensDB.length >= 20){
+        Swal.fire('Limite máximo de 20 itens atingido!')
+        return
+    }
+    itensDB.push({'item': texto.value, 'status': ''})
+    updateDB()
+}
 
-document.querySelector('ul').addEventListener('click', (e) =>{
-    if (e.target.tagName === 'LI')
-        e.target.classList.toggle(checked)
-});
-    
+function updateDB(){
+    localStorage.setItem('todolist', JSON.stringify(itensDB))
+    loadItens()
+}
+
+function loadItens() {
+    ul.innerHTML= "";
+    itensDB = JSON.parse(localStorage.getItem('todolist')) ?? []
+    itensDB.forEach((item, i) => {
+        insertItemTela(item.item, item.status, i)
+    })
+}
+
+function insertItemTela(text, status, i){
+    const li = document.createElement('li')
+
+    li.innerHTML= `
+    <div class="divLi">
+        <input type="checkbox" ${status} data-i=${i} onchange="done(this, ${i});" />
+        <span data-si=${i}>${text}</span>
+        <button class="buttonToDo" onclick="removeItem(${i})" data-i=${i}> <i class='bx bx-trash'></i></button>
+    </div>
+    `
+    ul.appendChild(li)
+
+    if(status){
+        document.querySelector(`[data-si="${i}"]`).classList.add('line-through')
+    }else{
+        document.querySelector(`[data-si="${i}"]`).classList.remove('line-through')
+    }
+    texto.value = ''
+}
+
+function done(chk, i){
+    if (chk.checked){
+        itensDB[i].status = 'checked'
+    }else{
+        itensDB[i].status = ''
+    }
+    updateDB()
+}
+
+function removeItem(i){
+    itensDB.splice(i, 1)
+    updateDB()
+}
+
+loadItens()
+
+// darkmode 
+
+const chk = document.getElementById('chk')
+
+chk.addEventListener('change', ()=>{
+    document.body.classList.toggle('dark')
+})
+
+function mostrarImagem() {
+    var checkbox = document.getElementById("chk");
+    var imagem = document.getElementById("imagem");
+
+    if (checkbox.checked) {
+        imagem.style.display = "block";
+    } else {
+        imagem.style.display = "none";
+    }
+}
