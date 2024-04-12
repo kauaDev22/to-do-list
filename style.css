@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
 }
 
 body{
@@ -167,7 +168,7 @@ li {
   text-decoration: line-through;
 }
 
-@media (max-width: 775px) {
+@media (max-width: 768px) {
   input {
     width: 70%;
   }
@@ -184,6 +185,30 @@ li {
   p {
     font-size: x-large;
   }
+
+  
 }
 
+.bx-moon,
+.bx-sun {
+  font-size: 18px; /* Tamanho dos ícones ajustado */
+}
 
+@media (max-width: 768px) {
+  .label {
+    transform: scale(1.2); /* Reduz a escala do switch em telas menores */
+    width: 40px; /* Ajusta a largura do switch para telas menores */
+  }
+
+  .label .ball {
+    height: 22px;
+    width: 22px;
+    top: 1px;
+    left: 1px;
+  }
+
+  .bx-moon,
+  .bx-sun {
+    display: none; /* Oculta os ícones do sol e da lua em telas menores */
+  }
+}
