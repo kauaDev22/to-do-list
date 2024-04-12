@@ -87,14 +87,3 @@ const chk = document.getElementById('chk')
 chk.addEventListener('change', ()=>{
     document.body.classList.toggle('dark')
 })
-
-function mostrarImagem() {
-    var checkbox = document.getElementById("chk");
-    var imagem = document.getElementById("imagem");
-
-    if (checkbox.checked) {
-        imagem.style.display = "block";
-    } else {
-        imagem.style.display = "none";
-    }
-}
